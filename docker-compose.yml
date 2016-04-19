@@ -1,0 +1,29 @@
+# for mac os run `docker-machine ip default` to get IP to setup /etc/hosts
+app:
+  image: ubuntu
+  stdin_open: true
+  volumes:
+     - "./code:/var/www/html"
+nginx:
+  image: nginx
+  ports:
+    - "8080:80"
+  volumes_from:
+    - app
+  volumes:
+    - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+  links:
+    - phpfpm
+
+phpfpm:
+  image: php:5.6-fpm
+  ports:
+    - "9090:9000"
+  volumes_from:
+    - app
+
+phpunit:
+  build: ./docker/phpunit
+  stdin_open: true
+  volumes_from:
+    - app
