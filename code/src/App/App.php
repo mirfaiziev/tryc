@@ -2,6 +2,7 @@
 
 namespace My\App;
 
+use My\Lib\Config;
 use My\Lib\Request;
 
 /**
@@ -11,14 +12,19 @@ use My\Lib\Request;
 class App
 {
     /**
-     * @var $instance App
+     * @var App $instance
      */
     private static $instance;
 
     /**
-     * @var $request \My\Lib\Request;
+     * @var \My\Lib\Request $request
      */
     protected $request;
+
+    /**
+     * @var \My\Lib\Config $config
+     */
+    protected $config;
     
     public static function getInstance()
     {
@@ -27,6 +33,14 @@ class App
         }
 
         return static::$instance;
+    }
+
+    /**
+     * @param array $configuration
+     */
+    public function initConfig(array $configuration)
+    {
+        $this->config = new Config($configuration);
     }
 
     public function run()

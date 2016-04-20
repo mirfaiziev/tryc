@@ -7,9 +7,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider requestInitExceptionDataProvider
      * @expectedException \Exception
-     * @param $server
-     * @param $expectedException
-     * @param $expectedMessage
+     * @param array $server
+     * @param \Exception $expectedException
+     * @param string $expectedMessage
      */
     public function testRequestInitExeption($server, $expectedException, $expectedMessage)
     {
@@ -20,11 +20,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider requestInitCorrectDataProvider
-     * @param $server
-     * @param $expectedMethod
-     * @param $expectedUri
+     * @param array $server
+     * @param string $expectedMethod
+     * @param string $expectedUri
      */
-    public function testRequestInitCorrect($server, $expectedMethod, $expectedUri)
+    public function testRequestInitCorrect(array $server, $expectedMethod, $expectedUri)
     {
         $request = new Request($server);
         $this->assertEquals($request->getMethod(), $expectedMethod);
