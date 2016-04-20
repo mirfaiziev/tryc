@@ -3,7 +3,14 @@
 namespace My\App;
 
 use My\Lib\Config;
+use My\Lib\Dispatcher;
 use My\Lib\Request;
+use My\Lib\Response\AbstractResponse;
+use My\Lib\Response\JsonResponse;
+use My\Lib\Router\DefaultRouter;
+use My\Lib\Router\RouterInterface;
+use My\Lib\UriParser\DefaultUriParser;
+use My\Lib\UriParser\UriParserInterface;
 
 /**
  * Class App -
@@ -17,15 +24,34 @@ class App
     private static $instance;
 
     /**
-     * @var \My\Lib\Request $request
+     * @var Request $request
      */
     protected $request;
 
     /**
-     * @var \My\Lib\Config $config
+     * @var AbstractResponse
+     */
+    protected $response;
+
+    /**
+     * @var Config $config
      */
     protected $config;
 
+    /**
+     * @var UriParserInterface
+     */
+    protected $uriParser;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * @var Dispatcher
+     */
+    protected $dispatcher;
     
     public static function getInstance()
     {
@@ -38,15 +64,20 @@ class App
 
     public function run()
     {
-       throw new \Exception('not implemented yet');
+       $this->dispatcher->dispatch();
     }
 
     /**
      * @param array $configuration
      */
-    public function initConfig(array $configuration)
+    public function init(array $configuration)
     {
         $this->config = new Config($configuration);
+        $this->initRequest();
+        $this->initResponse();
+        $this->initUriParser();
+        $this->initRouter();
+        $this->initDispatcher();
     }
 
     /**
@@ -68,18 +99,31 @@ class App
     
     protected function __construct()
     {
-        $this->init();
     }
-
-    protected function init()
-    {
-        $this->initRequest();
-    }
-    
 
     protected function initRequest()
     {
         $this->request = new Request();
+    }
+    
+    protected function initResponse()
+    {
+        $this->response = new JsonResponse();
+    }
+    
+    protected function initUriParser()
+    {
+        $this->uriParser = new DefaultUriParser($this->config);
+    }
+
+    protected function initRouter()
+    {
+        $this->router = new DefaultRouter($this->request, $this->uriParser);
+    }
+
+    protected function initDispatcher()
+    {
+        $this->dispatcher = new Dispatcher($this->config, $this->router, $this->response);
     }
     
 }

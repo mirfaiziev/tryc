@@ -4,9 +4,9 @@ namespace My\Lib\Response;
 
 abstract class AbstractResponse
 {
-    const CODE_OK = '200';
-    const CODE_NOT_FOUND = '404';
-    const CODE_ERROR = '500';
+    const CODE_OK = 200;
+    const CODE_NOT_FOUND = 404;
+    const CODE_ERROR = 500;
 
     const ALLOWED_CODES = [
         self::CODE_OK,
@@ -20,7 +20,7 @@ abstract class AbstractResponse
     abstract public function sendResponse();
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getStatusCode()
     {
@@ -50,6 +50,4 @@ abstract class AbstractResponse
     {
         $this->body = $body;
     }
-
-
 }

@@ -7,7 +7,7 @@ return [
     'defaultModule' => 'index',
     'defaultController' => 'index',
 
-    'controller4xx' => 'My\Module\\index\\error4xxController',
+    'errorController' => 'My\\Module\\index\\Controller\\errorController',
     'action404' => 'action404',
 
 ];
