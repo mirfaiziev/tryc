@@ -25,6 +25,7 @@ class App
      * @var \My\Lib\Config $config
      */
     protected $config;
+
     
     public static function getInstance()
     {
@@ -35,6 +36,11 @@ class App
         return static::$instance;
     }
 
+    public function run()
+    {
+       throw new \Exception('not implemented yet');
+    }
+
     /**
      * @param array $configuration
      */
@@ -43,9 +49,12 @@ class App
         $this->config = new Config($configuration);
     }
 
-    public function run()
+    /**
+     * @return Config
+     */
+    public function getConfig()
     {
-       throw new \Exception('not implemented yet');
+        return $this->config;
     }
 
     /**

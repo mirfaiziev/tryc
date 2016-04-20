@@ -1,6 +1,13 @@
 <?php
 // I don't want to write file parser now, so hi yii way )
 return [
-    'data_dir' => __DIR__.'/../../data/',
+    'dataDir' => __DIR__.'/../../data/',
     'mode' => 'dev',
+
+    'defaultModule' => 'index',
+    'defaultController' => 'index',
+
+    'controller4xx' => 'My\Module\\index\\error4xxController',
+    'action404' => 'action404',
+
 ];
