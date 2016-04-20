@@ -49,16 +49,27 @@ class DefaultUriParser implements UriParserInterface
     /**
      * UriParser constructor.
      * @param Config $config
-     * @param string $uri
-     * @param string $method
      */
-    public function __construct(Config $config, $uri, $method)
+    public function __construct(Config $config)
     {
-        $this->uri = $uri;
-        $this->action = $method.self::ACTION_SUFFIX;
-
         $this->defaultController = $config->getDefaultController();
         $this->defaultModule = $config->getDefaultModule();
+    }
+
+    /**
+     * @param string $uri
+     */
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod($method)
+    {
+        $this->action = $method.self::ACTION_SUFFIX;
     }
 
     /**
@@ -142,5 +153,6 @@ class DefaultUriParser implements UriParserInterface
         $controllerNamespace = sprintf(self::CONTROLLER_NAMESPACE, $chunks[0], $chunks[1]);
         return array(new Route($controllerNamespace, $this->action, $chunks[2]));
     }
+
 
 }

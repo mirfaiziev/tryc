@@ -27,7 +27,9 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
         $config->method('getDefaultModule')
             ->willReturn('index');
 
-        $parser = new DefaultUriParser($config, $uri, $method);
+        $parser = new DefaultUriParser($config);
+        $parser->setMethod($method);
+        $parser->setUri($uri);
         $routes = $parser->getRoutes();
 
         $this->assertCount(count($expectedRoutes),  $routes);
@@ -44,6 +46,8 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      * @param $uri
      * @param $method
      * @param $expectedException
+     * @param $expectedMessage
+     * @throws UriParserException
      */
     public function testDefaultUriParserException($uri, $method, $expectedException, $expectedMessage)
     {
@@ -57,8 +61,10 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
         $config->method('getDefaultModule')
             ->willReturn('index');
 
-        $parser = new DefaultUriParser($config, $uri, $method);
-        $routes = $parser->getRoutes();
+        $parser = new DefaultUriParser($config);
+        $parser->setMethod($method);
+        $parser->setUri($uri);
+        $parser->getRoutes();
 
         $this->expectException($expectedException);
         $this->expectExeptionMessage($expectedMessage);

@@ -9,6 +9,8 @@ use My\Lib\Config;
  */
 interface UriParserInterface
 {
-    public function __construct(Config $config, $uri, $method);
+    public function __construct(Config $config);
+    public function setUri($uri);
+    public function setMethod($method);
     public function getRoutes();
 }
