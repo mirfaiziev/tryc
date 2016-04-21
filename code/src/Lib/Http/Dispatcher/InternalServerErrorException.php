@@ -2,6 +2,6 @@
 
 namespace My\Lib\Http\Dispatcher;
 
-class InternalServerErrorException extends \Exception
+class InternalServerErrorException extends \RuntimeException
 {
 }

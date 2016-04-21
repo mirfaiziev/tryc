@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Http;
+namespace My\Lib\Http\Controller;
 
 use My\Lib\Http\Response\AbstractResponse;
 

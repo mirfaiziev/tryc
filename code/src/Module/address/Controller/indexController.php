@@ -1,7 +1,7 @@
 <?php
 namespace My\Module\address\Controller;
 
-use My\Lib\Http\AbstractController;
+use My\Lib\Http\Controller\AbstractController;
 
 class indexController extends AbstractController
 {

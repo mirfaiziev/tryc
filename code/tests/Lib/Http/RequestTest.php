@@ -13,9 +13,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequestInitExeption($server, $expectedException, $expectedMessage)
     {
-        $request = new Request($server);
         $this->expectException($expectedException);
-        $this->expectExeptionMessage($expectedMessage);
+        $this->expectExceptionMessage($expectedMessage);
+        new Request($server);
     }
 
     /**

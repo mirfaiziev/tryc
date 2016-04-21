@@ -17,9 +17,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function test404Action()
     {
+        $this->expectException(ControllerNotFoundException::class);
+
         $dispatcher = new Dispatcher($this->getMockConfig(), $this->getMockRouter(), $this->getMockResponse());
         $dispatcher->dispatch();
-        $this->expectException(ControllerNotFoundException::class);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace My\Module\index\Controller;
 
-use My\Lib\Http\AbstractController;
+use My\Lib\Http\Controller\AbstractController;
 use My\Lib\Http\Response\AbstractResponse;
 
 class errorController extends AbstractController

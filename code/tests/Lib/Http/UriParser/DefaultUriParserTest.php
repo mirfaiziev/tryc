@@ -39,15 +39,15 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultUriParserException($uri, $method, $expectedException, $expectedMessage)
     {
+        $this->expectException($expectedException);
+        $this->expectExceptionMessage($expectedMessage);
+
         $config = $this->getMockConfig();
 
         $parser = new DefaultUriParser($config);
         $parser->setMethod($method);
         $parser->setUri($uri);
         $parser->getRoutes();
-
-        $this->expectException($expectedException);
-        $this->expectExeptionMessage($expectedMessage);
     }
 
     /**
