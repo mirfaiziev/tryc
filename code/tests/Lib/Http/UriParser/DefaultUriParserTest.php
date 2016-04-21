@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\UriParser;
+namespace My\Lib\Http\UriParser;
 
 
 class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
@@ -138,7 +138,7 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockConfig()
     {
-        $config = $this->getMockBuilder('My\Lib\Config')
+        $config = $this->getMockBuilder('My\Lib\Http\Config')
             ->setMethods(['getDefaultController', 'getDefaultModule'])
             ->disableOriginalConstructor()
             ->getMock();

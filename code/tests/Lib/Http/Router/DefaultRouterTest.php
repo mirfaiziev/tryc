@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Router;
+namespace My\Lib\Http\Router;
 
 class DefaultRouterTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,7 +9,7 @@ class DefaultRouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultRouter()
     {
-        $request = $this->getMockBuilder('My\Lib\Request')
+        $request = $this->getMockBuilder('My\Lib\Http\Request')
             ->setMethods(['getMethod', 'getUri'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -20,7 +20,7 @@ class DefaultRouterTest extends \PHPUnit_Framework_TestCase
         $request->method('getUri')
             ->willReturn('/some/uri');
 
-        $uriParser = $this->getMockBuilder('My\Lib\UriParser\DefaultUriParser')
+        $uriParser = $this->getMockBuilder('My\Lib\Http\UriParser\DefaultUriParser')
             ->setMethods(['getRoutes'])
             ->disableOriginalConstructor()
             ->getMock();

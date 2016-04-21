@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Response;
+namespace My\Lib\Http\Response;
 
 class JsonResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,6 +14,13 @@ class JsonResponseTest extends \PHPUnit_Framework_TestCase
         $this->expectOutputString($expectedResponse);
         $response = new JsonResponse();
         $response->setBody($body);
+        $response->sendResponse();
+    }
+
+    public function testEmptyBodyResponse()
+    {
+        $this->expectOutputString('');
+        $response = new JsonResponse();
         $response->sendResponse();
     }
 
