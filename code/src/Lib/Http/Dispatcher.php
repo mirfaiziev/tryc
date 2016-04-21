@@ -102,7 +102,7 @@ class Dispatcher
     /**
      * @param string $message
      */
-    public function handlerInternalServerError($message)
+    public function handlerRuntimeException($message)
     {
         if (!method_exists($this->errorController, $this->action500)) {
             http_response_code(AbstractResponse::CODE_ERROR);
