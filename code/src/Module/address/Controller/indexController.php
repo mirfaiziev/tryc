@@ -1,6 +1,7 @@
 <?php
 namespace My\Module\address\Controller;
 
+use My\Lib\CsvDataHandler\Reader;
 use My\Lib\Http\Controller\AbstractController;
 
 class indexController extends AbstractController
@@ -10,7 +11,23 @@ class indexController extends AbstractController
      */
     public function getAction($param)
     {
+        if (0 == intval($param) && "0" != $param) {
+            // todo change exception
+            throw new \RuntimeException('Wrong param '.$param);
+        }
+        $reader = new Reader($this->config->get('dataFile'));
+        $reader->read();
 
+        if (!isset($reader->getData()[$param])) {
+            // todo
+        }
+
+        $line =  $reader->getData()[$param];
+        $this->response->setBody([
+            'name' => $line[0],
+            'phone' => $line[1],
+            'street' => $line[2],
+        ]);
     }
 
     /**

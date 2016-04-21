@@ -66,7 +66,7 @@ class Dispatcher
                       /**
                        * @var AbstractController $controller
                        */
-                      $controller = new $controllerName($this->response);
+                      $controller = new $controllerName($this->config, $this->response);
                       
                       call_user_func([$controller, $route->getAction()], $route->getParam());
                       $controller->getResponse()->sendResponse();
@@ -92,7 +92,7 @@ class Dispatcher
         /**
          * @var AbstractController $errorController
          */
-        $errorController = new $this->errorController($this->response);
+        $errorController = new $this->errorController($this->config, $this->response);
         call_user_func([$errorController, $this->action404], $this->errorController, $this->action404);
         $errorController->getResponse()->sendResponse();
 
@@ -102,7 +102,7 @@ class Dispatcher
     /**
      * @param string $message
      */
-    public function handlerRuntimeException($message)
+    public function handlerInternalServerError($message)
     {
         if (!method_exists($this->errorController, $this->action500)) {
             http_response_code(AbstractResponse::CODE_ERROR);
@@ -113,7 +113,7 @@ class Dispatcher
         /**
          * @var AbstractController $errorController
          */
-        $errorController = new $this->errorController($this->response);
+        $errorController = new $this->errorController($this->config, $this->response);
         call_user_func([$errorController, $this->action500], $message);
         $errorController->getResponse()->sendResponse();
 

@@ -12,7 +12,6 @@ use My\Lib\Http\Router\RouterInterface;
 use My\Lib\Http\UriParser\DefaultUriParser;
 use My\Lib\Http\UriParser\UriParserInterface;
 use My\Lib\Http\Dispatcher\ControllerNotFoundException;
-use My\Lib\Http\Dispatcher\InternalServerErrorException;
 /**
  * Class App -
  * @package My\App
@@ -67,14 +66,16 @@ class App
     {
         try {
             $this->dispatcher->dispatch();
+        } catch (\RuntimeException $e) {
+            // todo 2 types of exception - file not found or not valid data
         } catch (ControllerNotFoundException $e) {
             try {
                 $this->dispatcher->handlerControllerNotFound();
 
-            } catch (InternalServerErrorException $e) {
+            } catch (\RuntimeException $e) {
                 $this->dispatcher->handlerInternalServerError($e->getMessage());
             }
-        } catch (InternalServerErrorException $e) {
+        } catch (\RuntimeException $e) {
             $this->dispatcher->handlerInternalServerError($e->getMessage());
         }
     }

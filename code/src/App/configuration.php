@@ -1,7 +1,7 @@
 <?php
 // I don't want to write file parser now, so hi yii way )
 return [
-    'dataDir' => __DIR__.'/../../data/',
+    'dataFile' => __DIR__.'/../../data/example.csv',
     'mode' => 'dev',
 
     'defaultModule' => 'index',
