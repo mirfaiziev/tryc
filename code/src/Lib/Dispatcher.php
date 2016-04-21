@@ -3,6 +3,8 @@
 namespace My\Lib;
 
 use My\Lib\Dispatcher\ControllerNotFoundException;
+use My\Lib\Dispatcher\In;
+use My\Lib\Dispatcher\InternalServerErrorException;
 use My\Lib\Response\AbstractResponse;
 use My\Lib\Router\RouterInterface;
 
@@ -46,13 +48,12 @@ class Dispatcher
 
         $this->errorController = $this->config->getErrorController();
         $this->action404 = $this->config->getAction404();
+        $this->action500 = $this->config->getAction500();
     }
 
     public function dispatch()
     {
         $routes = $this->router->getRoutes();
-
-        try {
 
             if (empty($routes)) {
                 throw new ControllerNotFoundException();
@@ -76,20 +77,46 @@ class Dispatcher
 
             throw new ControllerNotFoundException();
 
-        } catch (ControllerNotFoundException $e) {
 
-            if (!method_exists($this->errorController, $this->action404)) {
-                die('ups'); // todo: add new exception
-            }
-            /**
-             * @var AbstractController $errorController
-             */
-            $errorController = new $this->errorController($this->response);
-            call_user_func([$errorController, $this->action404]);
-            $errorController->getResponse()->sendResponse();
+    }
 
+    /**
+     * @throws InternalServerErrorException
+     */
+    public function handlerControllerNotFound()
+    {
+        if (!method_exists($this->errorController, $this->action404)) {
+            throw new InternalServerErrorException('Cannot find action for handling 404 error');
+        }
+        /**
+         * @var AbstractController $errorController
+         */
+        $errorController = new $this->errorController($this->response);
+        call_user_func([$errorController, $this->action404], $this->errorController, $this->action404);
+        $errorController->getResponse()->sendResponse();
+
+        exit;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function handlerInternalServerError($message)
+    {
+        if (!method_exists($this->errorController, $this->action500)) {
+            http_response_code(AbstractResponse::CODE_ERROR);
+            echo 'Ups... Something went wrong. '.$message;
             exit;
         }
+
+        /**
+         * @var AbstractController $errorController
+         */
+        $errorController = new $this->errorController($this->response);
+        call_user_func([$errorController, $this->action500], $message);
+        $errorController->getResponse()->sendResponse();
+
+        exit;
     }
 
 }

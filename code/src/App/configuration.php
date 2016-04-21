@@ -9,5 +9,6 @@ return [
 
     'errorController' => 'My\\Module\\index\\Controller\\errorController',
     'action404' => 'action404',
+    'action500' => 'action500',
 
 ];

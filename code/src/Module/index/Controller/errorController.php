@@ -7,9 +7,29 @@ use My\Lib\Response\AbstractResponse;
 
 class errorController extends AbstractController
 {
-    public function action404()
+    /**
+     * @param string $controller
+     * @param string $method
+     */
+    public function action404_($controller, $method)
     {
         $this->response->setStatusCode(AbstractResponse::CODE_NOT_FOUND);
-        $this->response->setBody(['result'=>'Not Found']);
+        $this->response->setBody([
+            'result'=>'Route Not Found',
+            'controller' => $controller,
+            'method' => $method,
+        ]);
+    }
+
+    /**
+     * @param string $message
+     */
+    public function action500($message)
+    {
+        $this->response->setStatusCode(AbstractResponse::CODE_ERROR);
+        $this->response->setBody([
+            'result'=>'Internal Server Error',
+            'message' => $message,
+        ]);
     }
 }

@@ -5,10 +5,6 @@ namespace My\Lib\UriParser;
 
 class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testUriParserException()
-    {
-
-    }
     /**
      * @dataProvider uriParserDataProvider
      * @param string $uri
@@ -17,15 +13,7 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultUriParser($uri, $method, $expectedRoutes)
     {
-        $config = $this->getMockBuilder('My\Lib\Config')
-            ->setMethods(['getDefaultController', 'getDefaultModule'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $config->method('getDefaultController')
-            ->willReturn('index');
-        $config->method('getDefaultModule')
-            ->willReturn('index');
+        $config = $this->getMockConfig();
 
         $parser = new DefaultUriParser($config);
         $parser->setMethod($method);
@@ -51,15 +39,7 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultUriParserException($uri, $method, $expectedException, $expectedMessage)
     {
-        $config = $this->getMockBuilder('My\Lib\Config')
-            ->setMethods(['getDefaultController', 'getDefaultModule'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $config->method('getDefaultController')
-            ->willReturn('index');
-        $config->method('getDefaultModule')
-            ->willReturn('index');
+        $config = $this->getMockConfig();
 
         $parser = new DefaultUriParser($config);
         $parser->setMethod($method);
@@ -151,5 +131,22 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
                 'Cannot parse uri: /aaa/bbb/ccc/1234',
             ],
         ];
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getMockConfig()
+    {
+        $config = $this->getMockBuilder('My\Lib\Config')
+            ->setMethods(['getDefaultController', 'getDefaultModule'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $config->method('getDefaultController')
+            ->willReturn('index');
+        $config->method('getDefaultModule')
+            ->willReturn('index');
+        return $config;
     }
 }

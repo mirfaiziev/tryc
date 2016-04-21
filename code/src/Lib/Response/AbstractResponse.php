@@ -24,7 +24,8 @@ abstract class AbstractResponse
      */
     public function getStatusCode()
     {
-        return $this->statusCode;
+        // no status code - something went wrong
+        return isset($this->statusCode) ? $this->statusCode : self::CODE_ERROR;
     }
 
     /**

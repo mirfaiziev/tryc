@@ -11,7 +11,8 @@ use My\Lib\Router\DefaultRouter;
 use My\Lib\Router\RouterInterface;
 use My\Lib\UriParser\DefaultUriParser;
 use My\Lib\UriParser\UriParserInterface;
-
+use My\Lib\Dispatcher\ControllerNotFoundException;
+use My\Lib\Dispatcher\InternalServerErrorException;
 /**
  * Class App -
  * @package My\App
@@ -64,7 +65,18 @@ class App
 
     public function run()
     {
-       $this->dispatcher->dispatch();
+        try {
+            $this->dispatcher->dispatch();
+        } catch (ControllerNotFoundException $e) {
+            try {
+                $this->dispatcher->handlerControllerNotFound();
+
+            } catch (InternalServerErrorException $e) {
+                $this->dispatcher->handlerInternalServerError($e->getMessage());
+            }
+        } catch (InternalServerErrorException $e) {
+            $this->dispatcher->handlerInternalServerError($e->getMessage());
+        }
     }
 
     /**
