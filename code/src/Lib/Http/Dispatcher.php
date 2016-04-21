@@ -1,12 +1,12 @@
 <?php
 
-namespace My\Lib;
+namespace My\Lib\Http;
 
-use My\Lib\Dispatcher\ControllerNotFoundException;
-use My\Lib\Dispatcher\In;
-use My\Lib\Dispatcher\InternalServerErrorException;
-use My\Lib\Response\AbstractResponse;
-use My\Lib\Router\RouterInterface;
+use My\Lib\Http\Dispatcher\ControllerNotFoundException;
+use My\Lib\Http\Dispatcher\In;
+use My\Lib\Http\Dispatcher\InternalServerErrorException;
+use My\Lib\Http\Response\AbstractResponse;
+use My\Lib\Http\Router\RouterInterface;
 
 class Dispatcher
 {

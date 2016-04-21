@@ -1,12 +1,12 @@
 <?php
 
-namespace My\Lib;
+namespace My\Lib\Http;
 
-use My\Lib\Response\AbstractResponse;
+use My\Lib\Http\Response\AbstractResponse;
 
 /**
  * Class Controller - each controller's action return response
- * @package My\Lib
+ * @package My\Lib\Http
  */
 abstract class AbstractController
 {

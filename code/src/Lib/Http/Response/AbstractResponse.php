@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Response;
+namespace My\Lib\Http\Response;
 
 abstract class AbstractResponse
 {

@@ -1,10 +1,39 @@
 <?php
 namespace My\Module\address\Controller;
 
-class indexController
+use My\Lib\Http\AbstractController;
+
+class indexController extends AbstractController
 {
-    public function getAction()
+    /**
+     * @param $param
+     */
+    public function getAction($param)
     {
-        
+
+    }
+
+    /**
+     * @param $param
+     */
+    public function putAction($param)
+    {
+
+    }
+
+    /**
+     * @param $param
+     */
+    public function postAction($param)
+    {
+
+    }
+
+    /**
+     * @param $name
+     */
+    public function deleteAction($name)
+    {
+
     }
 }

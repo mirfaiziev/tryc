@@ -1,10 +1,10 @@
 <?php
 
-namespace My\Lib\UriParser;
+namespace My\Lib\Http\UriParser;
 
-use My\Lib;
-use My\Lib\Config;
-use My\Lib\Route;
+use My\Lib\Http;
+use My\Lib\Http\Config;
+use My\Lib\Http\Route;
 /**
  * Class DefaultUriParser - default implementation of Uri Parser, it means we don't expect any custom routes (but we can have it)
  * just define controller and method from uri like following:
@@ -14,7 +14,7 @@ use My\Lib\Route;
  *  2) controller aaa, param bbb
  *
  *
- * @package My\Lib\UriParser
+ * @package My\Lib\Http\UriParser
  */
 class DefaultUriParser implements UriParserInterface
 {

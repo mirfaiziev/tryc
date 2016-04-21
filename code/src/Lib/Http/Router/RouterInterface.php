@@ -1,5 +1,5 @@
 <?php
-namespace My\Lib\Router;
+namespace My\Lib\Http\Router;
 
 interface RouterInterface
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace My\Lib\Router;
+namespace My\Lib\Http\Router;
 
-use My\Lib\Request;
-use My\Lib\Router;
-use My\Lib\UriParser\UriParserInterface;
+use My\Lib\Http\Request;
+use My\Lib\Http\Router;
+use My\Lib\Http\UriParser\UriParserInterface;
 
 /**
  * Class DefaultRouter - default router doesn't support custom routes, just return what we get from uri parser
- * @package My\Lib\Router
+ * @package My\Lib\Http\Router
  */
 class DefaultRouter implements RouterInterface
 {

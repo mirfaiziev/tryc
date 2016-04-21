@@ -2,17 +2,17 @@
 
 namespace My\App;
 
-use My\Lib\Config;
-use My\Lib\Dispatcher;
-use My\Lib\Request;
-use My\Lib\Response\AbstractResponse;
-use My\Lib\Response\JsonResponse;
-use My\Lib\Router\DefaultRouter;
-use My\Lib\Router\RouterInterface;
-use My\Lib\UriParser\DefaultUriParser;
-use My\Lib\UriParser\UriParserInterface;
-use My\Lib\Dispatcher\ControllerNotFoundException;
-use My\Lib\Dispatcher\InternalServerErrorException;
+use My\Lib\Http\Config;
+use My\Lib\Http\Dispatcher;
+use My\Lib\Http\Request;
+use My\Lib\Http\Response\AbstractResponse;
+use My\Lib\Http\Response\JsonResponse;
+use My\Lib\Http\Router\DefaultRouter;
+use My\Lib\Http\Router\RouterInterface;
+use My\Lib\Http\UriParser\DefaultUriParser;
+use My\Lib\Http\UriParser\UriParserInterface;
+use My\Lib\Http\Dispatcher\ControllerNotFoundException;
+use My\Lib\Http\Dispatcher\InternalServerErrorException;
 /**
  * Class App -
  * @package My\App

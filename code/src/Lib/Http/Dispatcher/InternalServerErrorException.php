@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Dispatcher;
+namespace My\Lib\Http\Dispatcher;
 
 class InternalServerErrorException extends \Exception
 {

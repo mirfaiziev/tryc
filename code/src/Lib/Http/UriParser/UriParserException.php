@@ -1,5 +1,5 @@
 <?php
-namespace My\Lib\UriParser;
+namespace My\Lib\Http\UriParser;
 
 class UriParserException extends \Exception
 {
