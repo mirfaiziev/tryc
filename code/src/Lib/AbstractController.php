@@ -10,6 +10,7 @@ use My\Lib\Response\AbstractResponse;
  */
 abstract class AbstractController
 {
+    const DEFAULT_STATUS_CODE = AbstractResponse::CODE_OK;
     /**
      * @var AbstractResponse
      */
@@ -22,6 +23,7 @@ abstract class AbstractController
     public function __construct(AbstractResponse $response)
     {
         $this->response = $response;
+        $this->response->setStatusCode(self::DEFAULT_STATUS_CODE);
     }
 
     /**

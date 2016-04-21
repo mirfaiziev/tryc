@@ -62,10 +62,11 @@ class Dispatcher
             foreach ($routes as $route) {
                if (class_exists($route->getController())) {
                   if (method_exists($route->getController(), $route->getAction())) {
+                      $controllerName = $route->getController();
                       /**
                        * @var AbstractController $controller
                        */
-                      $controller = new $route->getController($this->response);
+                      $controller = new $controllerName($this->response);
                       
                       call_user_func([$controller, $route->getAction()], $route->getParam());
                       $controller->getResponse()->sendResponse();
