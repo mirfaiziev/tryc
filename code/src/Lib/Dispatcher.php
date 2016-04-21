@@ -66,7 +66,7 @@ class Dispatcher
                        */
                       $controller = new $route->getController($this->response);
                       
-                      call_user_func([$route->getController(), $route->getAction()], $route->getParam());
+                      call_user_func([$controller, $route->getAction()], $route->getParam());
                       $controller->getResponse()->sendResponse();
                       
                       exit;
