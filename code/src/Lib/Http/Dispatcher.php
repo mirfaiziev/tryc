@@ -7,6 +7,7 @@ use My\Lib\Http\Dispatcher\InternalServerErrorException;
 use My\Lib\Http\Response\AbstractResponse;
 use My\Lib\Http\Router\RouterInterface;
 use My\Lib\Http\Controller\AbstractController;
+use My\Lib\Config;
 
 /**
  * Class Dispatcher. It return result of execution controller or errors
@@ -25,6 +26,11 @@ class Dispatcher
      * @var RouterInterface
      */
     protected $router;
+
+    /**
+     * @var Request
+     */
+    protected $request;
 
     /**
      * @var AbstractResponse
@@ -56,12 +62,14 @@ class Dispatcher
      * Dispatcher constructor.
      * @param Config $config
      * @param RouterInterface $router
+     * @param Request $request
      * @param AbstractResponse $response
      */
-    public function __construct(Config $config, RouterInterface $router, AbstractResponse $response)
+    public function __construct(Config $config, RouterInterface $router, Request $request, AbstractResponse $response)
     {
         $this->config = $config;
         $this->router = $router;
+        $this->request = $request;
         $this->response = $response;
 
         $this->errorController = $this->config->getErrorController();
@@ -79,10 +87,13 @@ class Dispatcher
             throw new ControllerNotFoundException();
         }
 
+        /**
+         * @var Route $route
+         */
         foreach ($routes as $route) {
            if (class_exists($route->getController())) {
               if (method_exists($route->getController(), $route->getAction())) {
-                  $this->execute($route->getController(), $route->getAction(), $route->getParam());
+                  $this->execute($route->getModule(), $route->getController(), $route->getAction(), $route->getParam());
               }
            }
         }
@@ -99,7 +110,7 @@ class Dispatcher
             throw new InternalServerErrorException('Cannot find action for handling 404 error');
         }
 
-        $this->execute($this->errorController, $this->action404);
+        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action404);
     }
 
     /**
@@ -113,7 +124,7 @@ class Dispatcher
             exit;
         }
 
-        $this->execute($this->errorController, $this->action500, $message);
+        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action500, $message);
     }
 
     /**
@@ -125,23 +136,37 @@ class Dispatcher
             throw new InternalServerErrorException('Cannot find action for handling 400 error');
         }
 
-        $this->execute($this->errorController, $this->action400, $message);
+        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action400, $message);
     }
 
     /**
-     * @param string $controllerName
+     * @param $moduleNamespace
+     * @param string $controllerClass
      * @param string $action
      * @param array $params
      */
-    protected function execute($controllerName, $action, ...$params)
+    protected function execute($moduleNamespace, $controllerClass, $action, ...$params)
     {
+        $this->registerModuleService($moduleNamespace);
         /**
          * @var AbstractController $controller
          */
-        $controller = new $controllerName($this->config, $this->response);
+        $controller = new $controllerClass($this->config, $this->response);
         call_user_func([$controller, $action], ...$params);
         $controller->getResponse()->sendResponse();
 
         exit;
+    }
+
+    /**
+     * @param string $moduleNamespace
+     */
+    protected function registerModuleService($moduleNamespace)
+    {
+        $registerServicesClass = $moduleNamespace.'\\RegisterServices';
+
+        if (method_exists($registerServicesClass, 'init')) {
+            call_user_func([$registerServicesClass, 'init']);
+        }
     }
 }

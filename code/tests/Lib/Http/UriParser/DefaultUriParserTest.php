@@ -61,7 +61,7 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
                 'put',
                 [
                     0 => [
-                        'controller' => 'My\Module\\index\\Controller\\indexController',
+                        'controller' => '\\My\Module\\index1\\Controller\\index2Controller',
                         'action' => 'putAction',
                         'param' => null,
                     ],
@@ -72,12 +72,12 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
                 'get',
                 [
                     0 => [
-                        'controller' => 'My\Module\\aaa\\Controller\\indexController',
+                        'controller' => '\\My\Module\\aaa\\Controller\\index2Controller',
                         'action' => 'getAction',
                         'param' => null,
                     ],
                     1 => [
-                        'controller' => 'My\Module\\index\Controller\\aaaController',
+                        'controller' => '\\My\Module\\index1\Controller\\aaaController',
                         'action' => 'getAction',
                         'param' => null,
                     ],
@@ -88,17 +88,17 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
                 'post',
                 [
                     0 => [
-                        'controller' => 'My\Module\\aaa\\Controller\\bbbController',
+                        'controller' => '\\My\Module\\aaa\\Controller\\bbbController',
                         'action' => 'postAction',
                         'param' => null,
                     ],
                     1 => [
-                        'controller' => 'My\Module\\aaa\\Controller\\indexController',
+                        'controller' => '\\My\Module\\aaa\\Controller\\index2Controller',
                         'action' => 'postAction',
                         'param' => 'bbb',
                     ],
                     2 => [
-                        'controller' => 'My\Module\\index\Controller\\aaaController',
+                        'controller' => '\\My\Module\\index1\Controller\\aaaController',
                         'action' => 'postAction',
                         'param' => 'bbb',
                     ],
@@ -109,7 +109,7 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
                 'post',
                 [
                     0 => [
-                        'controller' => 'My\Module\\aaa\\Controller\\bbbController',
+                        'controller' => '\\My\Module\\aaa\\Controller\\bbbController',
                         'action' => 'postAction',
                         'param' => 'ccc',
                     ],
@@ -138,15 +138,15 @@ class DefaultUriParserTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockConfig()
     {
-        $config = $this->getMockBuilder('My\Lib\Http\Config')
+        $config = $this->getMockBuilder('My\Lib\Config')
             ->setMethods(['getDefaultController', 'getDefaultModule'])
             ->disableOriginalConstructor()
             ->getMock();
 
         $config->method('getDefaultController')
-            ->willReturn('index');
+            ->willReturn('index2');
         $config->method('getDefaultModule')
-            ->willReturn('index');
+            ->willReturn('index1');
         return $config;
     }
 }

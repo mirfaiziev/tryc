@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Http;
+namespace My\Lib;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {

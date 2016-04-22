@@ -8,6 +8,7 @@
 
 namespace My\Lib\Http;
 use My\Lib\Http\Dispatcher\ControllerNotFoundException;
+use My\Lib\Config;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,7 +20,12 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectException(ControllerNotFoundException::class);
 
-        $dispatcher = new Dispatcher($this->getMockConfig(), $this->getMockRouter(), $this->getMockResponse());
+        $dispatcher = new Dispatcher(
+            $this->getMockConfig(),
+            $this->getMockRouter(),
+            $this->getMockRequest(),
+        $this->getMockResponse());
+
         $dispatcher->dispatch();
     }
 
@@ -28,7 +34,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockConfig()
     {
-        $config = $this->getMockBuilder('My\Lib\Http\Config')
+        $config = $this->getMockBuilder('My\Lib\Config')
             ->disableOriginalConstructor()
             ->setMethods(['getErrorController', 'getAction404', 'getAction500'])
             ->getMock();
@@ -47,6 +53,15 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
             ->willReturn(null);
 
         return $router;
+    }
+
+    protected function getMockRequest()
+    {
+        $request = $this->getMockBuilder('My\Lib\Http\Request')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $request;
     }
 
     protected function getMockResponse()

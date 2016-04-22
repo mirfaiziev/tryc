@@ -3,23 +3,25 @@ namespace My\Module\address\Controller;
 
 use My\Lib\CsvDataHandler\Reader;
 use My\Lib\Http\Controller\AbstractController;
+use My\Lib\Http\Dispatcher\ControllerRuntimeException;
 
 class indexController extends AbstractController
 {
     /**
      * @param $param
+     * @throws ControllerRuntimeException
      */
     public function getAction($param)
     {
         if (0 == intval($param) && "0" != $param) {
-            // todo change exception
-            throw new \RuntimeException('Wrong param '.$param);
+            throw new ControllerRuntimeException('Wrong param '.$param);
         }
+
         $reader = new Reader($this->config->get('dataFile'));
         $reader->read();
 
         if (!isset($reader->getData()[$param])) {
-            // todo
+            throw new ControllerRuntimeException('Wrong param '.$param);
         }
 
         $line =  $reader->getData()[$param];

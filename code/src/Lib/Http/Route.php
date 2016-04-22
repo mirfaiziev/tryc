@@ -5,6 +5,10 @@ namespace My\Lib\Http;
 class Route
 {
     /**
+     * @var string module
+     */
+    protected $module;
+    /**
      * @var string $controller
      */
     protected $controller;
@@ -21,15 +25,26 @@ class Route
 
     /**
      * Route constructor.
+     * @param string $module
      * @param string $controller
      * @param string $action
      * @param string $param
      */
-    public function __construct($controller, $action, $param)
+    public function __construct($module, $controller, $action, $param)
     {
+        $this->module = $module;
         $this->controller = $controller;
         $this->action = $action;
         $this->param = $param;
+        $this->module = $module;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModule()
+    {
+        return $this->module;
     }
 
     /**

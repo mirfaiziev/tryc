@@ -7,7 +7,8 @@ return [
     'defaultModule' => 'index',
     'defaultController' => 'index',
 
-    'errorController' => 'My\\Module\\index\\Controller\\errorController',
+    'errorModule' => '\\My\\Module\\index',
+    'errorController' => '\\My\\Module\\index\\Controller\\errorController',
     'action404' => 'action404',
     'action400' => 'action400',
     'action500' => 'action500',

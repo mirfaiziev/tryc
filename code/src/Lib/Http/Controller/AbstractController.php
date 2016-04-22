@@ -2,7 +2,8 @@
 
 namespace My\Lib\Http\Controller;
 
-use My\Lib\Http\Config;
+use My\Lib\Config;
+use My\Lib\Http\Dispatcher\ControllerRuntimeException;
 use My\Lib\Http\Response\AbstractResponse;
 
 /**
@@ -41,5 +42,24 @@ abstract class AbstractController
     {
         return $this->response;
     }
-    
+
+    /**
+     * @param $body
+     */
+    protected function setBody($body)
+    {
+        $this->response->setBody($body);
+    }
+
+    /**
+     * @param $code
+     * @throws ControllerRuntimeException
+     */
+    protected function setStatusCode($code)
+    {
+        if (!in_array($code, AbstractResponse::ALLOWED_CODES)) {
+            throw new ControllerRuntimeException("Disallowed status code: ".$code);
+        }
+        $this->response->setStatusCode($code);
+    }
 }

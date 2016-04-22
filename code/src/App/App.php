@@ -2,18 +2,14 @@
 
 namespace My\App;
 
-use My\Lib\Http\Config;
+use My\Lib\DI;
+use My\Lib\Config;
 use My\Lib\Http\Dispatcher;
-use My\Lib\Http\Request;
-use My\Lib\Http\Response\AbstractResponse;
-use My\Lib\Http\Response\JsonResponse;
-use My\Lib\Http\Router\DefaultRouter;
-use My\Lib\Http\Router\RouterInterface;
-use My\Lib\Http\UriParser\DefaultUriParser;
-use My\Lib\Http\UriParser\UriParserInterface;
+
 use My\Lib\Http\Dispatcher\ControllerNotFoundException;
 use My\Lib\Http\Dispatcher\ControllerRuntimeException;
 use My\Lib\Http\Dispatcher\InternalServerErrorException;
+
 /**
  * Class App -
  * @package My\App
@@ -26,29 +22,14 @@ class App
     private static $instance;
 
     /**
-     * @var Request $request
-     */
-    protected $request;
-
-    /**
-     * @var AbstractResponse
-     */
-    protected $response;
-
-    /**
      * @var Config $config
      */
     protected $config;
 
     /**
-     * @var UriParserInterface
+     * @var DI;
      */
-    protected $uriParser;
-
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
+    protected $di;
 
     /**
      * @var Dispatcher
@@ -64,35 +45,37 @@ class App
         return static::$instance;
     }
 
-    public function run()
-    {
-        try {
-            $this->dispatcher->dispatch();
-        } catch (ControllerRuntimeException $e) {
-            $this->dispatcher->handlerRuntimeException($e->getMessage());
-        } catch (ControllerNotFoundException $e) {
-            try {
-                $this->dispatcher->handlerControllerNotFound();
-
-            } catch (InternalServerErrorException $e) {
-                $this->dispatcher->handlerInternalServerError($e->getMessage());
-            }
-        } catch (InternalServerErrorException $e) {
-            $this->dispatcher->handlerInternalServerError($e->getMessage());
-        }
-    }
-
     /**
      * @param array $configuration
      */
     public function init(array $configuration)
     {
         $this->config = new Config($configuration);
-        $this->initRequest();
-        $this->initResponse();
-        $this->initUriParser();
-        $this->initRouter();
-        $this->initDispatcher();
+        $this->di = new DI();
+
+        RegisterServices::init();
+    }
+
+    public function run()
+    {
+        $dispatcher = $this->di->get('dispatcher');
+
+        try {
+            $dispatcher->dispatch();
+        } catch (ControllerRuntimeException $e) {
+            $dispatcher->handlerRuntimeException($e->getMessage());
+        } catch (ControllerNotFoundException $e) {
+            try {
+                $dispatcher->handlerControllerNotFound();
+
+            } catch (InternalServerErrorException $e) {
+                $dispatcher->handlerInternalServerError($e->getMessage());
+            }
+        } catch (InternalServerErrorException $e) {
+            $dispatcher->handlerInternalServerError($e->getMessage());
+        } catch (\Exception $e) {
+            $dispatcher->handlerInternalServerError($e->getMessage());
+        }
     }
 
     /**
@@ -104,41 +87,14 @@ class App
     }
 
     /**
-     * @return Request
+     * @return DI
      */
-    public function getRequest()
+    public function getDi()
     {
-        return $this->request;
+        return $this->di;
     }
 
-    
     protected function __construct()
     {
     }
-
-    protected function initRequest()
-    {
-        $this->request = new Request();
-    }
-    
-    protected function initResponse()
-    {
-        $this->response = new JsonResponse();
-    }
-    
-    protected function initUriParser()
-    {
-        $this->uriParser = new DefaultUriParser($this->config);
-    }
-
-    protected function initRouter()
-    {
-        $this->router = new DefaultRouter($this->request, $this->uriParser);
-    }
-
-    protected function initDispatcher()
-    {
-        $this->dispatcher = new Dispatcher($this->config, $this->router, $this->response);
-    }
-    
 }

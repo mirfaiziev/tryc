@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Lib\Http;
+namespace My\Lib;
 
 class Config
 {

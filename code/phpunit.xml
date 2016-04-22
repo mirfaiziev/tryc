@@ -1,6 +1,7 @@
 <phpunit
         colors="true"
         bootstrap="tests/autoload.php"
+        convertErrorsToExceptions="true"
 >
     <testsuites>
         <testsuite name="My tests">

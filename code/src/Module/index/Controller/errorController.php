@@ -12,8 +12,8 @@ class errorController extends AbstractController
      */
     public function action400($message)
     {
-        $this->response->setStatusCode(AbstractResponse::CODE_BAD_REQUEST);
-        $this->response->setBody([
+        $this->setStatusCode(AbstractResponse::CODE_BAD_REQUEST);
+        $this->setBody([
             'result'=>'Error',
             'message' => $message,
         ]);
@@ -21,8 +21,8 @@ class errorController extends AbstractController
 
     public function action404()
     {
-        $this->response->setStatusCode(AbstractResponse::CODE_NOT_FOUND);
-        $this->response->setBody([
+        $this->setStatusCode(AbstractResponse::CODE_NOT_FOUND);
+        $this->setBody([
             'result'=>'Route Not Found',
         ]);
     }
@@ -32,8 +32,8 @@ class errorController extends AbstractController
      */
     public function action500($message)
     {
-        $this->response->setStatusCode(AbstractResponse::CODE_ERROR);
-        $this->response->setBody([
+        $this->setStatusCode(AbstractResponse::CODE_ERROR);
+        $this->setBody([
             'result'=>'Internal Server Error',
             'message' => $message,
         ]);

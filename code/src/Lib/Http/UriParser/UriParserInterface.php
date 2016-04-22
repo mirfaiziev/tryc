@@ -1,7 +1,7 @@
 <?php
 
 namespace My\Lib\Http\UriParser;
-use My\Lib\Http\Config;
+use My\Lib\Config;
 
 /**
  * Interface UriParser - we pass uri and method from request and get array of routes
