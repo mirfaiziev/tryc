@@ -19,7 +19,7 @@ class JsonResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyBodyResponse()
     {
-        $this->expectOutputString('');
+        $this->expectOutputString(null);
         $response = new JsonResponse();
         $response->sendResponse();
     }
