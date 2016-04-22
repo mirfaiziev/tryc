@@ -8,16 +8,22 @@ use My\Lib\Http\Response\AbstractResponse;
 class errorController extends AbstractController
 {
     /**
-     * @param string $controller
-     * @param string $method
+     * @param string $message
      */
-    public function action404_($controller, $method)
+    public function action400($message)
+    {
+        $this->response->setStatusCode(AbstractResponse::CODE_BAD_REQUEST);
+        $this->response->setBody([
+            'result'=>'Error',
+            'message' => $message,
+        ]);
+    }
+
+    public function action404()
     {
         $this->response->setStatusCode(AbstractResponse::CODE_NOT_FOUND);
         $this->response->setBody([
             'result'=>'Route Not Found',
-            'controller' => $controller,
-            'method' => $method,
         ]);
     }
 
