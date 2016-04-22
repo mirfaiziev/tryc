@@ -21,7 +21,7 @@ class RegisterServices implements RegisterServicesInterface
         $di = App::getInstance()->getDI();
         $config = App::getInstance()->getConfig();
 
-        $di->set('dispatcher', function() use ($config) {
+        $di->set('app::dispatcher', function() use ($config) {
             $request = new Request();
             $response = new JsonResponse();
             $uriParser = new DefaultUriParser($config);

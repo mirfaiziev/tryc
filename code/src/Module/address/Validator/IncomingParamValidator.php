@@ -2,9 +2,9 @@
 
 namespace My\Module\address\Validator;
 
-use My\App\AbstractValidator;
+use My\Lib\AbstractValidator;
 
-class IncomingDataValidator extends AbstractValidator
+class IncomingParamValidator extends AbstractValidator
 {
     /**
      * @var string $param

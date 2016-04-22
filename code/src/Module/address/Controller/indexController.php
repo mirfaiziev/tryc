@@ -1,7 +1,8 @@
 <?php
 namespace My\Module\address\Controller;
 
-use My\Lib\CsvDataHandler\Reader;
+use My\App\App;
+use My\Lib\AbstractValidator;
 use My\Lib\Http\Controller\AbstractController;
 use My\Lib\Http\Dispatcher\ControllerRuntimeException;
 
@@ -13,11 +14,17 @@ class indexController extends AbstractController
      */
     public function getAction($param)
     {
-        if (0 == intval($param) && "0" != $param) {
-            throw new ControllerRuntimeException('Wrong param '.$param);
+        $di = App::getInstance()->getDi();
+        /**
+         * @var AbstractValidator
+         */
+        $validator = $di->get('address::incomingDataValidator', $param, '123');
+
+        if (!$validator->isValid()) {
+            throw new ControllerRuntimeException($validator->getError());
         }
 
-        $reader = new Reader($this->config->get('dataFile'));
+        $reader = $di->get('dataReader', $this->config->get('dataFile'));
         $reader->read();
 
         if (!isset($reader->getData()[$param])) {

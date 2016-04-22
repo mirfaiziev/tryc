@@ -58,7 +58,7 @@ class App
 
     public function run()
     {
-        $dispatcher = $this->di->get('dispatcher');
+        $dispatcher = $this->di->get('app::dispatcher');
 
         try {
             $dispatcher->dispatch();

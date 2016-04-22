@@ -1,6 +1,6 @@
 <?php
 
-namespace My\App;
+namespace My\Lib;
 
 abstract class AbstractValidator
 {
