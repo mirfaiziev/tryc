@@ -3,7 +3,8 @@
 namespace My\Lib;
 
 /**
- * Class DI - dependency injection
+ * Class DI - dependency injection, doesn't support passing argument to constructor in get method right now
+ *
  * @package My\Lib
  */
 class DI
@@ -12,12 +13,7 @@ class DI
      * @var array
      */
     protected $services = [];
-
-    /**
-     * @var array
-     */
-    protected $results = [];
-
+    
     /**
      * @param $serviceName
      * @param callable $callback
@@ -29,22 +25,20 @@ class DI
 
     /**
      * @param $serviceName
-     * @param array $params
      * @return mixed
      * @throws \Exception
      */
-    public function get($serviceName, ...$params)
+    public function get($serviceName)
     {
         if (!isset($this->services[$serviceName])) {
             throw new \Exception('Cannot find service '. $serviceName);
         }
-
-        $serializedParams = serialize($params);
-
-        if (!isset($this->results[$serviceName][$serializedParams])) {
-            $this->results[$serviceName][$serializedParams] = call_user_func($this->services[$serviceName], ...$params);
+        
+        if (is_callable($this->services[$serviceName])) {
+            $this->services[$serviceName] = call_user_func($this->services[$serviceName]);
         }
-        return $this->results[$serviceName][$serializedParams];
+        
+        return $this->services[$serviceName];
     }
 
     public function __call($name, $params)
@@ -56,6 +50,6 @@ class DI
         }
         $serviceName = lcfirst(substr($name, 3));
 
-        return $this->get($serviceName, ...$params);
+        return $this->get($serviceName);
     }
 }

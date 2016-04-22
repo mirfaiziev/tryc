@@ -15,15 +15,14 @@ class IncomingParamValidator extends AbstractValidator
      * @var string $error
      */
     protected $error;
+
     /**
-     * IncomingDataValidator constructor.
      * @param string $param
      */
-    public function __construct($param)
+    public function setParam($param)
     {
         $this->param = $param;
     }
-
 
     public function isValid()
     {

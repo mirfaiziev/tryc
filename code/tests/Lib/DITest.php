@@ -9,7 +9,7 @@ class ServicesDITest extends \PHPUnit_Framework_TestCase
      * @expectedException
      * @throws \Exception
      */
-    public function _testServiceDIReturnNullForWrongName()
+    public function testServiceDIReturnNullForWrongName()
     {
         $this->expectException(\Exception::class);
         $servicesDI = new DI();
@@ -25,7 +25,7 @@ class ServicesDITest extends \PHPUnit_Framework_TestCase
         $servicesDI->set('name1','value');
     }
 
-    public function _testSuccess()
+    public function testSuccess()
     {
         $servicesDI = new DI();
 
@@ -36,17 +36,16 @@ class ServicesDITest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($servicesDI->getName1(), true);
     }
 
-    public function testSuccessWithArgs()
+    public function testSingleExecution()
     {
         $servicesDI = new DI();
 
-        $servicesDI->set('add',function($a, $b) {
-            return $a+$b;
+        $servicesDI->set('time',function() {
+            return microtime(true);
         });
 
-        $this->assertEquals($servicesDI->get('add', 1, 2), 3);
-        $this->assertEquals($servicesDI->getAdd(1,2), 3);
-        $this->assertEquals($servicesDI->get('add', 4, 5), 9);
-        $this->assertEquals($servicesDI->getAdd(4, 5), 9);
+        $result1 = $servicesDI->get('time');
+        usleep(10);
+        $this->assertEquals($servicesDI->get('time'), $result1);
     }
 }

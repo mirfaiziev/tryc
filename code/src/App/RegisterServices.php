@@ -15,13 +15,12 @@ class RegisterServices implements RegisterServicesInterface
 {
     public static function init()
     {
-        /**
-         * @var DI $di;
-         */
-        $di = App::getInstance()->getDI();
-        $config = App::getInstance()->getConfig();
+        $app = App::getInstance();
 
-        $di->set('app::dispatcher', function() use ($config) {
+        $di = $app->getDi();
+
+        $di->set('app::dispatcher', function() use ($di) {
+            $config = $di->get('config');
             $request = new Request();
             $response = new JsonResponse();
             $uriParser = new DefaultUriParser($config);

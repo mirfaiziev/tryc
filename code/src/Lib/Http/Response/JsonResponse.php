@@ -9,9 +9,6 @@ class JsonResponse extends AbstractResponse
     {
         $body = $this->getBody();
         http_response_code($this->getStatusCode());
-        if (!empty($body)) {
-            echo json_encode($body);
-
-        }
+        echo json_encode($body);
     }
 }

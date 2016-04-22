@@ -31,7 +31,8 @@ class DataHandlerService
 
     public function getRowById($id)
     {
-
+        $this->reader->read();
+        return isset($this->reader->getData()[$id]) ? $this->reader->getData()[$id] : null;
     }
 
     public function addNewRow($data)

@@ -22,11 +22,6 @@ class App
     private static $instance;
 
     /**
-     * @var Config $config
-     */
-    protected $config;
-
-    /**
      * @var DI;
      */
     protected $di;
@@ -50,9 +45,11 @@ class App
      */
     public function init(array $configuration)
     {
-        $this->config = new Config($configuration);
         $this->di = new DI();
-
+        $this->di->set('config', function() use ($configuration) {
+            return new Config($configuration);
+        });
+        
         RegisterServices::init();
     }
 
@@ -77,15 +74,7 @@ class App
             $dispatcher->handlerInternalServerError($e->getMessage());
         }
     }
-
-    /**
-     * @return Config
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
+    
     /**
      * @return DI
      */

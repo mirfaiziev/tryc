@@ -5,6 +5,7 @@ use My\App\App;
 use My\Lib\AbstractValidator;
 use My\Lib\Http\Controller\AbstractController;
 use My\Lib\Http\Dispatcher\ControllerRuntimeException;
+use My\Module\address\Service\DataHandlerService;
 
 class indexController extends AbstractController
 {
@@ -18,25 +19,20 @@ class indexController extends AbstractController
         /**
          * @var AbstractValidator
          */
-        $validator = $di->get('address::incomingDataValidator', $param, '123');
+        $validator = $di->get('address::incomingParamValidator');
+        $validator->setParam($param);
 
         if (!$validator->isValid()) {
             throw new ControllerRuntimeException($validator->getError());
         }
+        
+        /**
+         * @var DataHandlerService $dataHandler
+         */
+        $dataHandler = $di->get('address::dataHandlerService');
+        $row = $dataHandler->getRowById($param);
 
-        $reader = $di->get('dataReader', $this->config->get('dataFile'));
-        $reader->read();
-
-        if (!isset($reader->getData()[$param])) {
-            throw new ControllerRuntimeException('Wrong param '.$param);
-        }
-
-        $line =  $reader->getData()[$param];
-        $this->response->setBody([
-            'name' => $line[0],
-            'phone' => $line[1],
-            'street' => $line[2],
-        ]);
+        $this->setBody($di->get('address::prepareResponseService')->responseGet($row));
     }
 
     /**
