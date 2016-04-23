@@ -2,7 +2,6 @@
 
 namespace My\App;
 
-use My\Lib\DI;
 use My\Lib\Http\Request;
 use My\Lib\RegisterServicesInterface;
 
