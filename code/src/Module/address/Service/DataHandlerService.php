@@ -2,8 +2,8 @@
 
 namespace My\Module\address\Service;
 
-use My\Lib\CsvDataHandler\Reader;
-use My\Lib\CsvDataHandler\Writer;
+use My\CsvDataHandler\Reader;
+use My\CsvDataHandler\Writer;
 
 class DataHandlerService
 {
@@ -69,7 +69,7 @@ class DataHandlerService
 
         $this->writer->saveData($this->data);
 
-        return count($this->data);
+        return count($this->data) - 1;
     }
 
     /**

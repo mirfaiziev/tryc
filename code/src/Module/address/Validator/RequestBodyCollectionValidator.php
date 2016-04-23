@@ -2,8 +2,8 @@
 
 namespace My\Module\address\Validator;
 
-use My\App\App;
-use My\Lib\AbstractValidator;
+use App\App;
+use My\Module\AbstractValidator;
 
 class RequestBodyCollectionValidator extends AbstractValidator
 {

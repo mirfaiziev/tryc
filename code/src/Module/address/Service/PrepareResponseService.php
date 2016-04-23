@@ -1,7 +1,7 @@
 <?php
 namespace My\Module\address\Service;
 
-use My\Lib\Http\Dispatcher\ControllerRuntimeException;
+use My\HttpFramework\Dispatcher\ControllerRuntimeException;
 
 class PrepareResponseService
 {

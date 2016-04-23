@@ -2,13 +2,13 @@
 
 namespace My\Module\address;
 
-use My\App\App;
-use My\Lib\CsvDataHandler\Writer;
-use My\Lib\DI;
-use My\Lib\RegisterServicesInterface;
+use App\App;
+use My\Di\DI;
+use My\CsvDataHandler\Writer;
+use App\RegisterServicesInterface;
 use My\Module\address\Service\DataHandlerService;
 use My\Module\address\Service\PrepareResponseService;
-use My\Lib\CsvDataHandler\Reader;
+use My\CsvDataHandler\Reader;
 use My\Module\address\Validator\IdValidator;
 use My\Module\address\Validator\RequestBodyCollectionValidator;
 use My\Module\address\Validator\RequestBodyElementValidator;
@@ -23,7 +23,6 @@ class RegisterServices implements RegisterServicesInterface
          * @var DI
          */
         $di = App::getInstance()->getDi();
-
 
         $di->set('address::idValidator', function () {
             return new IdValidator();
