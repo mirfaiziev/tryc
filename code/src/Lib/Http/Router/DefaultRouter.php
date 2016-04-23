@@ -7,7 +7,7 @@ use My\Lib\Http\Router;
 use My\Lib\Http\UriParser\UriParserInterface;
 
 /**
- * Class DefaultRouter - default router doesn't support custom routes, just return what we get from uri parser
+ * Class DefaultRouter - default router does not support custom routes, just return what we get from uri parser
  * @package My\Lib\Http\Router
  */
 class DefaultRouter implements RouterInterface

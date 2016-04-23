@@ -73,6 +73,7 @@ class indexController extends AbstractRestfulController
 
     /**
      * update existing resource by id, return null if this resource doesn't exists
+     * @param $id
      * @throws ControllerRuntimeException
      * @throws \Exception
      */

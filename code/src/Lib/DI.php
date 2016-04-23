@@ -3,7 +3,7 @@
 namespace My\Lib;
 
 /**
- * Class DI - dependency injection, doesn't support passing argument to constructor in get method right now
+ * Class DI - dependency injection, does not support passing argument to constructor in get method right now
  *
  * @package My\Lib
  */

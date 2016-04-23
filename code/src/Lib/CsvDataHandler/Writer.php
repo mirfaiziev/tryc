@@ -20,7 +20,7 @@ class Writer
     public function saveData(array $data)
     {
         if (!is_writable($this->filename)) {
-            throw new \RuntimeException("Csv handler cannot write the file. File " . $this->filename . " is not writeable.");
+            throw new \RuntimeException("Csv handler cannot write the file. File " . $this->filename . " is not writable.");
         }
 
         $fp = fopen($this->filename, 'w');

@@ -2,18 +2,18 @@
 namespace My\Lib\Http\Controller;
 
 /**
- * Class AbstractRestfulController. Child of this class should hanle request in the following way
+ * Class AbstractRestfulController. Child of this class should handle request in the following way
  *
  * GET: /resource/id - get element of resource by id
  * GET: /resource - get collection of elements of resource, get all resources
  *
- * POST: /resource/id - update existing resource by id, return null if this resource doesn't exists
+ * POST: /resource/id - update existing resource by id, return null if this resource does not exists
  * POST: /resource - add new resource
  *
  * PUT: /resource/id - Update existing resource by id, or add new resource with this id, or return null if it's not possible
  * PUT: /resource - update all resources
  *
- * DELETE: /resource/id - delete existing resource where by id, return null if this resource doesn't exists
+ * DELETE: /resource/id - delete existing resource where by id, return null if this resource does not exists
  * DELETE: /resource - delete all resources
  *
  *
