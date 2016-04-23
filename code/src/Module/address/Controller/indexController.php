@@ -1,8 +1,8 @@
 <?php
 namespace My\Module\address\Controller;
 
-use My\Lib\Http\Controller\AbstractRestfulController;
-use My\Lib\Http\Dispatcher\ControllerRuntimeException;
+use My\HttpFramework\Dispatcher\ControllerRuntimeException;
+use My\Module\AbstractRestfulController;
 use My\Module\address\Service\DataHandlerService;
 use My\Module\address\Service\PrepareResponseService;
 use My\Module\address\Validator\IdValidator;
@@ -94,7 +94,7 @@ class indexController extends AbstractRestfulController
         }
 
         if (!$this->dataHandler->updateRow($id, json_decode($this->request->getBody(), true))) {
-            throw new ControllerRuntimeException('Updating data error: cannot find row with id: ' . $id);
+            throw new ControllerRuntimeException('Updating data error: cannot find row with id ' . $id);
         }
 
         $this->returnOk();
@@ -147,7 +147,7 @@ class indexController extends AbstractRestfulController
         }
 
         if (!$this->dataHandler->updateRow($id, json_decode($this->request->getBody(), true))) {
-            throw new ControllerRuntimeException('Updating data error: cannot find row with id: ' . $id);
+            throw new ControllerRuntimeException('Updating data error: cannot find row with id ' . $id);
         }
 
         $this->returnOk();
@@ -177,7 +177,7 @@ class indexController extends AbstractRestfulController
     protected function deleteElementAction($id)
     {
         if (!$this->dataHandler->deleteRow($id)) {
-            throw new ControllerRuntimeException('Deleting data error: cannot find row with id: ' . $id);
+            throw new ControllerRuntimeException('Deleting data error: cannot find row with id ' . $id);
         }
 
         $this->returnOk();

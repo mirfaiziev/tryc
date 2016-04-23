@@ -2,7 +2,7 @@
 
 namespace My\Module\address\Validator;
 
-use My\Lib\AbstractValidator;
+use My\Module\AbstractValidator;
 
 class IdValidator extends AbstractValidator
 {
