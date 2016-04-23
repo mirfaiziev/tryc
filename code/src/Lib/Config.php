@@ -2,6 +2,15 @@
 
 namespace My\Lib;
 
+/**
+ * Class Config
+ * @package My\Lib
+ * @method getErrorModule
+ * @method getErrorController
+ * @method getAction400
+ * @method getAction404
+ * @method getAction500
+ */
 class Config
 {
     /**

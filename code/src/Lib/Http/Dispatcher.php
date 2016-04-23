@@ -40,6 +40,11 @@ class Dispatcher
     /**
      * @var string
      */
+    protected $errorModule;
+
+    /**
+     * @var string
+     */
     protected $errorController;
 
     /**
@@ -67,16 +72,16 @@ class Dispatcher
      */
     public function __construct(Config $config, RouterInterface $router, Request $request, AbstractResponse $response)
     {
-        $this->config = $config;
         $this->router = $router;
         $this->request = $request;
         $this->response = $response;
 
-        $this->errorController = $this->config->getErrorController();
+        $this->errorModule = $config->getErrorModule();
+        $this->errorController = $config->getErrorController();
 
-        $this->action400 = $this->config->getAction400();
-        $this->action404 = $this->config->getAction404();
-        $this->action500 = $this->config->getAction500();
+        $this->action400 = $config->getAction400();
+        $this->action404 = $config->getAction404();
+        $this->action500 = $config->getAction500();
     }
 
     public function dispatch()
@@ -110,7 +115,7 @@ class Dispatcher
             throw new InternalServerErrorException('Cannot find action for handling 404 error');
         }
 
-        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action404);
+        $this->execute($this->errorModule, $this->errorController, $this->action404);
     }
 
     /**
@@ -124,7 +129,7 @@ class Dispatcher
             exit;
         }
 
-        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action500, $message);
+        $this->execute($this->errorModule, $this->errorController, $this->action500, $message);
     }
 
     /**
@@ -136,7 +141,7 @@ class Dispatcher
             throw new InternalServerErrorException('Cannot find action for handling 400 error');
         }
 
-        $this->execute($this->config->getErrorModule(), $this->errorController, $this->action400, $message);
+        $this->execute($this->errorModule, $this->errorController, $this->action400, $message);
     }
 
     /**
@@ -151,8 +156,20 @@ class Dispatcher
         /**
          * @var AbstractController $controller
          */
-        $controller = new $controllerClass($this->config, $this->response);
+        $controller = new $controllerClass($this->request, $this->response);
+
+        // before action
+        if (method_exists($controller, 'beforeAction')) {
+            call_user_func([$controller, 'beforeAction'], ...$params);
+        }
+        
         call_user_func([$controller, $action], ...$params);
+
+        // after action
+        if (method_exists($controller, 'afterAction')) {
+            call_user_func([$controller, 'afterAction'], ...$params);
+        }
+        
         $controller->getResponse()->sendResponse();
 
         exit;

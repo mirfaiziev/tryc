@@ -9,6 +9,9 @@ abstract class AbstractValidator
      */
     protected $error;
 
+    /**
+     * @return bool
+     */
     abstract public function isValid();
 
     /**

@@ -16,7 +16,7 @@ class PrepareResponseService
      * @return array|null
      * @throws ControllerRuntimeException
      */
-    public function responseGet(array $row = null)
+    public function responseGetElement(array $row = null)
     {
         // if empty row - return null
         if (empty($row)) {
@@ -32,5 +32,46 @@ class PrepareResponseService
             'phone' => $row[1],
             'street' => $row[2],
         ];
+    }
+
+    /**
+     * @param array|null $rows
+     * @return mixed|null
+     * @throws ControllerRuntimeException
+     */
+    public function responseGetCollection(array $rows = null)
+    {
+        // if empty row - return null
+        if (empty($rows)) {
+            return null;
+        }
+
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[] = $this->responseGetElement($row);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function responseInsertedId($id)
+    {
+        return [
+            'result' => 'success',
+            'insertedID' => $id,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function responseOk()
+    {
+        return ['result' => 'success'];
     }
 }

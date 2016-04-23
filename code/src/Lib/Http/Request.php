@@ -10,6 +10,11 @@ class Request
     protected $server;
 
     /**
+     * @var string
+     */
+    protected $body;
+
+    /**
      * @var string (get|set|put|delete)
      */
     protected $method;
@@ -27,10 +32,12 @@ class Request
     /**
      * Request constructor.
      * @param array $server
+     * @param null $body
      */
-    public function __construct(array $server = null)
+    public function __construct(array $server = null, $body = null)
     {
-        $this->server = isset($server) ? $server: $_SERVER; 
+        $this->server = isset($server) ? $server : $_SERVER;
+        $this->body = isset($body) ? $body : file_get_contents('php://input');
         $this->init();
     }
 
@@ -48,6 +55,14 @@ class Request
     public function getUri()
     {
         return $this->uri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
     }
     
     protected function init()
