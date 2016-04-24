@@ -16,4 +16,10 @@
     
 **running test**
 
-    after start docker-compose run `docker exec -it tryc_phpunit_1 phpunit .`
+    get php unit image name by `docker-compose ps`
+    after start docker-compose run `docker exec -it $phpunit-image phpunit .`
+    
+    
+**Before start**
+
+    Create Exaample csv file (f.e. copy from example.csv.default) and grant read+write access to it
