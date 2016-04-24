@@ -24,8 +24,8 @@ class DataHandlerService
 
     /**
      * DataHandlerService constructor.
-     * @param Reader $reader
-     * @param Writer $writer
+     * @param $reader
+     * @param $writer
      */
     public function __construct(Reader $reader, Writer $writer)
     {
@@ -39,11 +39,9 @@ class DataHandlerService
      */
     public function getRowById($id)
     {
-        if (!isset($this->data)) {
-            $this->reader->read();
+        if (is_null($this->data)) {
             $this->data = $this->reader->getData();
         }
-
         return isset($this->data[$id]) ? $this->data[$id] : null;
     }
 
@@ -52,7 +50,6 @@ class DataHandlerService
      */
     public function getRows()
     {
-        $this->reader->read();
         $this->data = $this->reader->getData();
         return $this->data;
     }
@@ -63,7 +60,6 @@ class DataHandlerService
      */
     public function addNewRow(array $row)
     {
-        $this->reader->read();
         $this->data = $this->reader->getData();
         $this->data[] = $row;
 
@@ -79,10 +75,7 @@ class DataHandlerService
      */
     public function updateRow($id, array $row)
     {
-        if (!isset($this->data)) {
-            $this->reader->read();
-            $this->data = $this->reader->getData();
-        }
+        $this->data = $this->reader->getData();
 
         if (!isset($this->data[$id])) {
             return false;
@@ -101,10 +94,7 @@ class DataHandlerService
      */
     public function deleteRow($id)
     {
-        if (!isset($this->data)) {
-            $this->reader->read();
-            $this->data = $this->reader->getData();
-        }
+        $this->data = $this->reader->getData();
 
         if (!isset($this->data[$id])) {
             return false;

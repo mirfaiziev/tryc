@@ -2,10 +2,11 @@
 
 namespace My\Module\index\Controller;
 
+use My\HttpFramework\ControllerInterface;
 use My\HttpFramework\Response\AbstractResponse;
-use My\Module\AbstractController;
+use My\AbstractController;
 
-class errorController extends AbstractController
+class errorController extends AbstractController implements ControllerInterface
 {
     /**
      * @param string $message

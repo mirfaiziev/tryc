@@ -2,18 +2,23 @@
 
 namespace My\Module\address\Validator;
 
-use App\App;
-use My\Module\AbstractValidator;
+use My\AbstractValidator;
 
 class RequestBodyCollectionValidator extends AbstractValidator
 {
     /**
-     * @var string $body
+     * @var RequestBodyCollectionValidator
+     */
+    protected $bodyElementValidator;
+
+    /**
+     * @var array
+     * $body
      */
     protected $body;
 
     /**
-     * @param string $body
+     * @param array $body
      */
     public function setBody($body)
     {
@@ -25,30 +30,44 @@ class RequestBodyCollectionValidator extends AbstractValidator
      */
     public function isValid()
     {
-        $body = json_decode($this->body, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $this->error = 'Error parsing request body';
-            return false;
-        }
-
-        if (!is_array($body) || empty($body)) {
+        if (!is_array($this->body) || empty($this->body)) {
             $this->error = 'Body should be not empty array';
             return false;
         }
 
-        /**
-         * @var RequestBodyElementValidator $rowValidator
-         */
-        $rowValidator = App::getInstance()->getDi()->get('address::bodyElementValidator');
-        foreach ($body as $row) {
-            $rowValidator->setBody($row);
-            if (!$rowValidator->isValid()) {
-                $this->error = $rowValidator->getError();
+        $rowValidator = $this->getBodyElementValidator();
+
+        $count = 0; // use count instead of id cause row might not me an array
+        foreach ($this->body as $row) {
+            if (!is_array($row)) {
+                $this->error = 'Error in Row #' . $count . '. Row is not array.';
                 return false;
             }
+
+            $rowValidator->setBody($row);
+            if (!$rowValidator->isValid()) {
+                $this->error = 'Error in Row #' . $count . '. ' . $rowValidator->getError();
+                return false;
+            }
+            $count++;
         }
 
         return true;
+    }
+
+    /**
+     * @return RequestBodyCollectionValidator
+     */
+    public function getBodyElementValidator()
+    {
+        return $this->bodyElementValidator;
+    }
+
+    /**
+     * @param RequestBodyElementValidator $bodyElementValidator
+     */
+    public function setBodyElementValidator($bodyElementValidator)
+    {
+        $this->bodyElementValidator = $bodyElementValidator;
     }
 }

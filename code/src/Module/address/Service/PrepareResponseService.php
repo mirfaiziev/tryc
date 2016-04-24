@@ -74,4 +74,9 @@ class PrepareResponseService
     {
         return ['result' => 'success'];
     }
+
+    public function responseNull()
+    {
+        return null;
+    }
 }

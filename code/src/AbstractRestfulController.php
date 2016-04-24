@@ -1,5 +1,7 @@
 <?php
-namespace My\Module;
+namespace My;
+
+use My\HttpFramework\ControllerInterface;
 
 /**
  * Class AbstractRestfulController. Child of this class should handle request in the following way
@@ -19,7 +21,7 @@ namespace My\Module;
  *
  * @package My\HttpFramework\Controller
  */
-abstract class AbstractRestfulController extends AbstractController
+abstract class AbstractRestfulController extends AbstractController implements ControllerInterface
 {
     /**
      * @param $id

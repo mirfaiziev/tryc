@@ -2,7 +2,7 @@
 
 namespace My\Module\address\Validator;
 
-use My\Module\AbstractValidator;
+use My\AbstractValidator;
 
 class IdValidator extends AbstractValidator
 {
@@ -33,12 +33,12 @@ class IdValidator extends AbstractValidator
             return true;
         }
 
-        if (empty($this->id)) {
+        if (empty($this->id) && '0' !== $this->id) {
             $this->error = 'Id should not be empty';
             return false;
         }
 
-        if (0 == intval($this->id) && "0" != $this->id) {
+        if (0 == intval($this->id) && '0' != $this->id) {
             $this->error = 'Wrong id \'' . $this->id . '\'';
             return false;
         }

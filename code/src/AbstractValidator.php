@@ -1,6 +1,6 @@
 <?php
 
-namespace My\Module;
+namespace My;
 
 abstract class AbstractValidator
 {

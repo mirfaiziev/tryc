@@ -9,43 +9,22 @@ namespace My\CsvDataHandler;
 class Reader
 {
     /**
-     * @var string $filename
+     * @var StorageInterface
      */
-    protected $filename;
-
+    protected $storage;
+    
     /**
      * @var array $data
      */
     protected $data;
+
     /**
      * Reader constructor.
-     * @param string $filename
+     * @param StorageInterface $storage
      */
-    public function __construct($filename)
+    public function __construct(StorageInterface $storage)
     {
-        $this->filename = $filename;
-    }
-
-    public function read()
-    {
-        if (!file_exists($this->filename)) {
-            throw new \RuntimeException("Csv handler cannot read the file. File " . $this->filename . " is not found.");
-        }
-
-        if (!is_readable($this->filename)) {
-            throw new \RuntimeException("Csv handler cannot read the file. File " . $this->filename . " is not readable.");
-        }
-
-        $fp = fopen($this->filename, 'r');
-
-        if (flock($fp, LOCK_SH | LOCK_NB )) {
-            while ($data = fgetcsv($fp)) {
-                $this->data[] = $data;
-            }
-            flock($fp, LOCK_UN);
-        }
-
-        fclose($fp);
+        $this->storage = $storage;
     }
 
     /**
@@ -53,6 +32,8 @@ class Reader
      */
     public function getData()
     {
-        return $this->data;
+        $this->data = $this->storage->getData();
+        
+        return $this->data;  
     }
 }

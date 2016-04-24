@@ -3,15 +3,18 @@ namespace My\CsvDataHandler;
 
 class Writer
 {
-    protected $filename;
+    /**
+     * @var StorageInterface
+     */
+    protected $storage;
 
     /**
-     * Writer constructor.
-     * @param $filename
+     * Reader constructor.
+     * @param StorageInterface $storage
      */
-    public function __construct($filename)
+    public function __construct(StorageInterface $storage)
     {
-        $this->filename = $filename;
+        $this->storage = $storage;
     }
 
     /**
@@ -19,18 +22,7 @@ class Writer
      */
     public function saveData(array $data)
     {
-        if (!is_writable($this->filename)) {
-            throw new \RuntimeException("Csv handler cannot write the file. File " . $this->filename . " is not writable.");
-        }
-
-        $fp = fopen($this->filename, 'w');
-        if (flock($fp, LOCK_EX | LOCK_NB )) {
-            foreach ($data as $line) {
-                fputcsv($fp, $line);
-            }
-            flock($fp, LOCK_UN);
-        }
-        fclose($fp);
+        $this->storage->saveData($data);
     }
 
 }

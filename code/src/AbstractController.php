@@ -1,9 +1,10 @@
 <?php
 
-namespace My\Module;
+namespace My;
 
 use App\App;
 use My\Di\DI;
+use My\HttpFramework\ControllerInterface;
 use My\HttpFramework\Dispatcher\ControllerRuntimeException;
 use My\HttpFramework\Request;
 use My\HttpFramework\Response\AbstractResponse;
@@ -12,7 +13,7 @@ use My\HttpFramework\Response\AbstractResponse;
  * Class Controller - each controller's action return response
  * @package My\HttpFramework
  */
-abstract class AbstractController
+abstract class AbstractController implements ControllerInterface
 {
     const DEFAULT_STATUS_CODE = AbstractResponse::CODE_OK;
 
@@ -40,7 +41,6 @@ abstract class AbstractController
         $this->request = $request;
         $this->response = $response;
         $this->response->setStatusCode(self::DEFAULT_STATUS_CODE);
-        $this->di = App::getInstance()->getDi();
     }
 
     /**
@@ -49,6 +49,14 @@ abstract class AbstractController
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * @return DI
+     */
+    public function getDi()
+    {
+        return App::getInstance()->getDi();
     }
 
     /**

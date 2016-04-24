@@ -2,12 +2,13 @@
 namespace My\Module\address\Controller;
 
 use My\HttpFramework\Dispatcher\ControllerRuntimeException;
-use My\Module\AbstractRestfulController;
+use My\AbstractRestfulController;
 use My\Module\address\Service\DataHandlerService;
 use My\Module\address\Service\PrepareResponseService;
 use My\Module\address\Validator\IdValidator;
 use My\Module\address\Validator\RequestBodyCollectionValidator;
 use My\Module\address\Validator\RequestBodyElementValidator;
+use My\Module\address\Validator\RequestBodyJsonValidator;
 
 /**
  * Class indexController
@@ -21,6 +22,10 @@ class indexController extends AbstractRestfulController
     protected $dataHandler;
 
     /**
+     * @var array $requestBody
+     */
+    protected $requestBody;
+    /**
      * @var PrepareResponseService
      */
     protected $prepareResponse;
@@ -30,15 +35,28 @@ class indexController extends AbstractRestfulController
         /**
          * @var IdValidator $idValidator
          */
-        $idValidator = $this->di->get('address::idValidator');
+        $idValidator = $this->getDi()->get('address::idValidator');
         $idValidator->setId($id);
 
         if (!$idValidator->isValid()) {
             throw new ControllerRuntimeException($idValidator->getError());
         }
 
-        $this->dataHandler = $this->di->get('address::dataHandlerService');
-        $this->prepareResponse = $this->di->get('address::prepareResponseService');
+        if (!is_null($this->request->getBody())) {
+            /**
+             * @var RequestBodyJsonValidator
+             */
+            $jsonValidator = $this->getDi()->get('address::bodyJsonValidator');
+            $jsonValidator->setBodyString($this->request->getBody());
+
+            if (!$jsonValidator->isValid()) {
+                throw new ControllerRuntimeException($jsonValidator->getError());
+            }
+
+            $this->requestBody = json_decode($this->request->getBody(), true);
+        }
+        $this->dataHandler = $this->getDi()->get('address::dataHandlerService');
+        $this->prepareResponse = $this->getDi()->get('address::prepareResponseService');
     }
 
     /**
@@ -79,21 +97,16 @@ class indexController extends AbstractRestfulController
      */
     protected function postElementAction($id)
     {
-        $body = $this->request->getBody();
-        /**
-         * @var RequestBodyElementValidator $bodyElementValidator
-         */
-        $bodyElementValidator = $this->di->get('address::bodyElementValidator');
-        $bodyElementValidator->setBody($body);
 
 
         $rows = $this->dataHandler->getRows();
 
         if (!isset($rows[$id])) {
-            throw new ControllerRuntimeException('Cannot find row with id ' . $id);
+            $this->returnNull();
+            return;
         }
 
-        if (!$this->dataHandler->updateRow($id, json_decode($this->request->getBody(), true))) {
+        if (!$this->dataHandler->updateRow($id, $this->requestBody)) {
             throw new ControllerRuntimeException('Updating data error: cannot find row with id ' . $id);
         }
 
@@ -105,18 +118,18 @@ class indexController extends AbstractRestfulController
      */
     protected function postCollectionAction()
     {
-        $body = $this->request->getBody();
         /**
          * @var RequestBodyElementValidator $bodyElementValidator
          */
-        $bodyElementValidator = $this->di->get('address::bodyElementValidator');
-        $bodyElementValidator->setBody($body);
+        $bodyElementValidator = $this->getDi()->get('address::bodyElementValidator');
+        $bodyElementValidator->setBody($this->requestBody);
 
         if (!$bodyElementValidator->isValid()) {
             throw new ControllerRuntimeException($bodyElementValidator->getError());
         }
 
-        $insertedId = $this->dataHandler->addNewRow(json_decode($this->request->getBody(), true));
+
+        $insertedId = $this->dataHandler->addNewRow($this->requestBody);
 
 
         $this->setBody(
@@ -132,22 +145,31 @@ class indexController extends AbstractRestfulController
      */
     protected function putElementAction($id)
     {
-        $body = $this->request->getBody();
         /**
          * @var RequestBodyElementValidator $bodyElementValidator
          */
-        $bodyElementValidator = $this->di->get('address::bodyElementValidator');
-        $bodyElementValidator->setBody($body);
+        $bodyElementValidator = $this->getDi()->get('address::bodyElementValidator');
+        $bodyElementValidator->setBody($this->requestBody);
 
+        if (!$bodyElementValidator->isValid()) {
+            throw new ControllerRuntimeException($bodyElementValidator->getError());
+        }
 
         $rows = $this->dataHandler->getRows();
 
         if (!isset($rows[$id])) {
-            throw new ControllerRuntimeException('Cannot find row with id ' . $id);
+            if ($id != count($rows)) {
+                throw new ControllerRuntimeException('Cannot add row with id ' . $id);
+            }
+
+            $this->dataHandler->addNewRow($this->requestBody);
+            $this->returnOk();
+
+            return;
         }
 
-        if (!$this->dataHandler->updateRow($id, json_decode($this->request->getBody(), true))) {
-            throw new ControllerRuntimeException('Updating data error: cannot find row with id ' . $id);
+        if (!$this->dataHandler->updateRow($id, $this->requestBody)) {
+            throw new ControllerRuntimeException('Updating data error: cannot modify row with id ' . $id);
         }
 
         $this->returnOk();
@@ -158,14 +180,17 @@ class indexController extends AbstractRestfulController
      */
     protected function putCollectionAction()
     {
-        $body = $this->request->getBody();
         /**
-         * @var RequestBodyCollectionValidator $bodyCollectionValidator
+         * @var RequestBodyCollectionValidator bodyCollectionValidator
          */
-        $bodyCollectionValidator = $this->di->get('address::bodyCollectionValidator');
-        $bodyCollectionValidator->setBody($body);
+        $bodyCollectionValidator = $this->getDi()->get('address::bodyCollectionValidator');
+        $bodyCollectionValidator->setBody($this->requestBody);
 
-        $this->dataHandler->updateAll($body);
+        if (!$bodyCollectionValidator->isValid()) {
+            throw new ControllerRuntimeException($bodyCollectionValidator->getError());
+        }
+
+        $this->dataHandler->updateAll($this->requestBody);
 
         $this->returnOk();        
     }
@@ -193,6 +218,13 @@ class indexController extends AbstractRestfulController
     {
         $this->setBody(
             $this->prepareResponse->responseOk()
+        );
+    }
+
+    protected function returnNull()
+    {
+        $this->setBody(
+            $this->prepareResponse->responseNull()
         );
     }
 }
