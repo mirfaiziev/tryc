@@ -71,5 +71,5 @@ class Autoload
 
 $autoloader = new Autoload();
 
-$autoloader->addClassMap('My\\Di\\', __DIR__ . '/../vendor/my/di/src',
+$autoloader->addClassMap('My\\Di\\', __DIR__ . '/../vendor/my/_di/src',
 ]);

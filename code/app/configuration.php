@@ -13,7 +13,7 @@ return [
             'prefix' => 'My\\',
             'baseDir' => __DIR__ . '/../src',
         ],
-        'di' => [
+        '_di' => [
             'prefix' => 'My\\Di\\',
             'baseDir' => __DIR__ . '/../vendor/my/di/src',
         ],
